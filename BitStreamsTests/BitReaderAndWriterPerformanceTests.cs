@@ -9,7 +9,7 @@ namespace BitStreamsTests
 {
     public sealed class BitReaderAndWriterPerformanceTests
     {
-        private static readonly byte[] Buffer = Enumerable.Repeat((byte)0xAA, 100000000).ToArray();
+        private static readonly byte[] ByteBuffer = Enumerable.Repeat((byte)0xFF, 100000000).ToArray();
         
         [Theory]
         [InlineData(1000)]
@@ -22,7 +22,7 @@ namespace BitStreamsTests
         {
             for (var i = 0; i < numberOfReads; ++i)
             {
-                Buffer[i].Should().Be(0xAA);
+                ByteBuffer[i].Should().Be(0xFF);
             }
         }
 
@@ -35,10 +35,10 @@ namespace BitStreamsTests
         [InlineData(100000000)]
         public void read_bits_from_buffer(int numberOfReads)
         {
-            var bitReader = new BitReader(new MemoryStream(Buffer));
+            var bitReader = new BitReader(new MemoryStream(ByteBuffer));
             for (var i = 0; i < numberOfReads; ++i)
             {
-                bitReader.Read(2).Value.Should().Be(0x02);
+                bitReader.Read(3).Value.Should().Be(0x07);
             }
         }
     }
