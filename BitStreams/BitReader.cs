@@ -11,7 +11,7 @@ namespace BitStreams
         private readonly Stream _stream;
 
         private ulong _register;
-        private int _registerPosition;
+        private int _registerPosition = BitsInUlong;
         
 
         public BitReader(Stream stream)
@@ -23,19 +23,20 @@ namespace BitStreams
         {
             if (numberOfBits > BitsInUlong) throw new NotSupportedException();
             
-            while (_registerPosition < numberOfBits)
+            while (_registerPosition > BitsInUlong - numberOfBits)
             {
                 var byteOrNone = _stream.ReadByteOrNone();
                 if (byteOrNone == default) return default;
 
-                _register |= (ulong) (byteOrNone.Value << _registerPosition);
-                _registerPosition += BitsInByte;
+                _registerPosition -= BitsInByte;
+                _register |=  (ulong)byteOrNone.Value << _registerPosition;
             }
 
-            var result = _register & ulong.MaxValue >> (BitsInUlong - numberOfBits);
+            var mask = ~(ulong.MaxValue >> numberOfBits);
+            var result = (_register & mask) >> (BitsInUlong - numberOfBits);
             
-            _register >>= numberOfBits;
-            _registerPosition -= numberOfBits;
+            _register <<= numberOfBits;
+            _registerPosition += numberOfBits;
             
             return result;
         }
