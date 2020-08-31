@@ -6,7 +6,7 @@ namespace Benchmark
     {
         static void Main()
         {
-            BenchmarkRunner.Run<ReadingFromABufferBenchmark>();
+            BenchmarkRunner.Run<WritingFromABufferBenchmark>();
         }
     }
 }
