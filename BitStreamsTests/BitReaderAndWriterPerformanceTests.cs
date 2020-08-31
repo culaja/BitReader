@@ -38,7 +38,7 @@ namespace BitStreamsTests
             var bitReader = new BitReader(new MemoryStream(ByteBuffer));
             for (var i = 0; i < numberOfReads; ++i)
             {
-                bitReader.Read(3).Value.Should().Be(0x07);
+                bitReader.ReadAsByte(3).Value.Should().Be(0x07);
             }
         }
     }

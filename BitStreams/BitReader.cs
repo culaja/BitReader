@@ -19,6 +19,8 @@ namespace BitStreams
             _stream = stream;
         }
 
+        public byte? ReadAsByte(int numberOfBits) => (byte?)Read(numberOfBits);
+
         public ulong? Read(int numberOfBits)
         {
             if (numberOfBits > BitsInUlong) throw new NotSupportedException();
